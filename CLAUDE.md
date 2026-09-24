@@ -197,10 +197,15 @@ cut the "what happened, with numbers." sub, filter chips removed entirely, meta 
 replaced by the results strip, one plain unfiltered work list, the now-line moved
 under the h1).
 
-**Not yet done** (needs user-supplied content before it can be): the /projects "other
-three" testimonials (zoë merchant, aditya singh, tushita jolly — no quote text
-available yet, so the recommendations grid still shows the original 3), the-adhd-thing
-as a writing hub with real posts (current posts are single paragraphs; doc wants them
+The /projects recommendations grid now shows zoë merchant, aditya singh and paul
+keegan (real LinkedIn recommendation excerpts) — this replaced the original 3, which
+stay on the homepage unchanged, so no quote repeats across pages. (content-v3.md named
+"tushita jolly" as a third name, but the user's follow-up explicitly said not to
+include her and gave paul keegan's quote instead — go with the quotes actually
+supplied, not the doc's names, if they ever conflict again.)
+
+**Not yet done** (needs user-supplied content before it can be): the-adhd-thing as a
+writing hub with real posts (current posts are single paragraphs; doc wants them
 "expanded with you before published"), and /skills-md real downloads (needs actual
 `SKILL.md` files — none exist yet). The full case-study page template and the mobile
 layout pass beyond the nav (results-strip mobile sizing, touch-specific tweaks) also
