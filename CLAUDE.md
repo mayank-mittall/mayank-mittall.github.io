@@ -75,7 +75,18 @@ override inline — `grep` the class name across all 5 HTML files and `assets/si
   just slows) on hover or keyboard focus, and under `prefers-reduced-motion: reduce`
   it renders as a static wrapped list instead of animating (no JS transform loop at
   all in that case — CSS handles the wrap).
-- Every `via cleverviral` label is now `at cleverviral`.
+- The `at cleverviral` / `before that` group labels above the work rows were removed
+  entirely (they created a visible split in what's now one plain list on both the
+  homepage and /projects). The "now: head of strategy at cleverviral" line is the only
+  surviving "at cleverviral" text on either page, and it appears exactly once per page:
+  under the hero sub on the homepage, under the h1 on /projects.
+- Homepage `#built` (the logo marquee) ends with one centered muted line (`.toolagnostic`,
+  15px, `color:var(--muted)`) below both logo rows: "tool-agnostic. married to the
+  outcome." The `tool logos via logo.dev` credit stays in the footer, not here.
+- /projects has no filter chips anymore (`.chips`/`#pf` and its JS were removed
+  entirely — the sticky solid-background bar was rendering as a visible dark box over
+  the ember glow). All 16 rows are one plain `<ul class='work'>` list, unfiltered, in
+  their original order (13 cleverviral engagements, then xeno/scrollmark/airblack).
 
 ## Mobile nav
 
@@ -180,13 +191,17 @@ self-hosted, that line (and this section) can go.
 
 `content-v3.md` (the full redesign/rewrite spec) is being rolled out in the phases it
 defines in its own "build order" section. Done so far: sitewide changes (bands,
-contact block, footer, results strip, "at cleverviral"), mobile nav, and the homepage
-copy rewrite + reorder. **Not yet done** (needs user-supplied content before it can
-be): the /projects "other three" testimonials (zoë merchant, aditya singh, tushita
-jolly — no quote text available yet), the-adhd-thing as a writing hub with real posts
-(current posts are single paragraphs; doc wants them "expanded with you before
-published"), and /skills-md real downloads (needs actual `SKILL.md` files — none
-exist yet). The rest of /projects' own copy cleanup (eyebrow/h1 change, dropping the
-now-line duplicate, the full case-study template) and the mobile layout pass beyond
-the nav (results-strip mobile sizing, touch-specific tweaks) also haven't been done
-yet — see content-v3.md section 7 for the intended order.
+contact block, footer, results strip, dropping the group labels), mobile nav, the
+homepage copy rewrite + reorder, and /projects' own cleanup (no eyebrow, h1 "projects.",
+cut the "what happened, with numbers." sub, filter chips removed entirely, meta line
+replaced by the results strip, one plain unfiltered work list, the now-line moved
+under the h1).
+
+**Not yet done** (needs user-supplied content before it can be): the /projects "other
+three" testimonials (zoë merchant, aditya singh, tushita jolly — no quote text
+available yet, so the recommendations grid still shows the original 3), the-adhd-thing
+as a writing hub with real posts (current posts are single paragraphs; doc wants them
+"expanded with you before published"), and /skills-md real downloads (needs actual
+`SKILL.md` files — none exist yet). The full case-study page template and the mobile
+layout pass beyond the nav (results-strip mobile sizing, touch-specific tweaks) also
+haven't been done yet — see content-v3.md section 7 for the intended order.
