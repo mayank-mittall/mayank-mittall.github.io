@@ -2,10 +2,12 @@
 
 Personal portfolio site, live at https://mayank-mittall.github.io/. Dark-minimalism
 "Filmic Mono" theme (charcoal background, ember-orange accent). Plain static site —
-no build step, no framework, no bundler. Every page is a single self-contained HTML
-file with CSS and JS inlined in `<style>`/`<script>` tags. GitHub Pages serves the
-repo's raw files directly, so what's committed is exactly what ships. Pushing to
-`main` is the deploy step.
+no build step, no framework, no bundler. GitHub Pages serves the repo's raw files
+directly, so what's committed is exactly what ships. Pushing to `main` is the deploy
+step.
+
+Copy conventions: lowercase, no em-dashes, no slogans or jabs at "other people"
+("not slide decks", "no deck"). State things plainly, let numbers do the work.
 
 ## Structure
 
@@ -15,7 +17,10 @@ projects/index.html     projects page
 skills-md/index.html    skills page
 the-adhd-thing/index.html
 404.html                custom 404
-assets/logos/           self-hosted tool/GTM logo PNGs (160x160, NN-name.png)
+assets/site.css          shared CSS (Ember Motion/Field, base reset, nav, results strip, mobile menu)
+assets/site.js           shared JS (same systems + mobile menu logic)
+assets/fonts/             self-hosted Archivo + Instrument Serif woff2s
+assets/logos/             self-hosted tool/GTM logo PNGs (160x160, NN-name.png)
 robots.txt, sitemap.xml, .nojekyll
 ```
 
@@ -23,13 +28,67 @@ Clean URLs via directory-style routing (`/projects/`, not `/projects.html`) — 
 "page" is `foldername/index.html`. Follow that pattern for any new page, and add it
 to `robots.txt` / `sitemap.xml`.
 
-## Custom systems — reuse, don't replace
+## Shared assets vs page-specific inline CSS/JS
 
+Each page still has its own inline `<style>` blocks for page-specific layout (hero
+sizing, section-specific components like `.sys`/`.work`/`.recs`/`.als`), but anything
+byte-identical across all 5 pages lives in `/assets/site.css` and `/assets/site.js`
+instead of being copy-pasted per page. This includes:
+
+- Base reset/typography (`:root` vars, body, grain animation, `.wrap`, `.top` nav shell)
 - **Ember Motion**: scroll/reveal/hover animation system (`data-reveal`,
-  `data-magnetic`, `data-roll`, `data-cursor` attributes). Inlined CSS + JS at the
-  bottom of each page.
+  `data-magnetic`, `data-roll`, `data-cursor` attributes)
 - **Ember Field**: background ambient canvas effect (`data-spotlight`, `data-field`
-  attributes). Also inlined per page.
+  attributes)
+- The results-strip ticker (see below) and the mobile menu overlay/toggle
+- `@font-face` declarations
+
+When adding something that should appear identically on every page, put it in the
+shared files, not inline. When editing something page-specific (e.g. one page's hero
+padding), check first whether it's actually in the shared file before duplicating an
+override inline — `grep` the class name across all 5 HTML files and `assets/site.css`.
+
+## Sitewide conventions (content-v3 pass)
+
+- No `.band` raised section backgrounds and no section borders — the page is one
+  continuous charcoal surface, sections separated by space only
+  (`padding-block: clamp(56px, 7vw, 104px)` as the base, tightened further per-section
+  where noted inline). Hairlines *inside* lists (work rows, resources) are fine and
+  intentional — only section-level dividers were removed.
+- **Contact block** (identical on every page, in the `#contact` section): h2 `got a
+  go-to-market problem?`, then `tell me what's stuck. 30 minutes on a call is usually
+  enough to know if i can help.`, then three buttons: `let's talk →` (cal.com), `email`
+  (button, not a link — click copies the address to clipboard, shows a "copied" tag,
+  and also fires `mailto:` for visitors with a configured mail client; the address is
+  never shown as visible text), `linkedin`. Implemented via `data-cursor='copy'
+  data-copy='...' data-mailto='...'` on a `<button>`; the click handler lives in
+  `assets/site.js`.
+- **Footer** (identical on every page): `© 2026 mayank mittal` on the left, `tool logos
+  via logo.dev` on the right, inside a `.wrap` for column alignment. No email/linkedin
+  links in the footer (they're in the contact block instead).
+- **Results strip**: a slow (24px/s) horizontal ticker of `number + label` result pairs
+  separated by ember dots, sitting right below the hero on the homepage and replacing
+  the old meta line on `/projects` (which also folds in the 3 hero-stat numbers via a
+  `data-extra` JSON attribute on `.rtrack`, since /projects has no separate static
+  trio). The item list lives in one JS array (`RESULTS` in `assets/site.js`) — add a
+  result there and it shows up everywhere the strip is used. It stops completely (not
+  just slows) on hover or keyboard focus, and under `prefers-reduced-motion: reduce`
+  it renders as a static wrapped list instead of animating (no JS transform loop at
+  all in that case — CSS handles the wrap).
+- Every `via cleverviral` label is now `at cleverviral`.
+
+## Mobile nav
+
+Below 720px width, the desktop horizontal nav (`.mx-nav-links`) is hidden and replaced
+with: `mm.` on the left (unchanged), a small solid `let's talk →` button
+(`.nav-cta-m`), and a `menu` button (`.menu-btn`) that toggles a full-screen overlay
+(`.mmenu`) with the same section links stacked in poster type plus a full-width
+`let's talk →` button at the bottom. The overlay closes on link click, its own close
+button, or Esc, and locks page scroll while open (`html{overflow:hidden}`) — logic is
+in `assets/site.js`, a standalone IIFE that runs regardless of reduced-motion
+preference (unlike Ember Motion, which is fully disabled under reduced motion).
+404.html's overlay has only 3 links (no contact section on that page, matching its
+desktop nav).
 
 ## Security/SEO — don't remove
 
@@ -37,20 +96,19 @@ Each page has a CSP `<meta>` tag, `referrer` meta set to
 `strict-origin-when-cross-origin`, canonical URL, OG/Twitter meta tags, and every
 `target="_blank"` link carries `rel="noopener noreferrer"`.
 
-The CSP's `img-src` is `'self' data: https:`, so any HTTPS image source (including
-hotlinked logo APIs) already loads without editing the CSP. `script-src`/`style-src`
-are locked down — if you add a new external script or stylesheet origin, add it there
-or it will be silently blocked. `style-src`/`font-src` no longer allow Google Fonts
-domains (see Fonts below) — the site now makes zero third-party network requests
-except the still-hotlinked logos noted below.
+CSP is `script-src 'self' 'unsafe-inline'` / `style-src 'self' 'unsafe-inline'`, which
+already covers loading `/assets/site.css` and `/assets/site.js` (same-origin) with no
+edits needed. `img-src` is `'self' data: https:`, so hotlinked logo images load fine
+too. `font-src` is `'self' data:` (Google Fonts domains were removed once fonts were
+self-hosted — see below).
 
 ## Fonts — self-hosted
 
 Archivo (variable, wdth 62–125%, wght 300–900) and Instrument Serif (italic + normal,
-400) are self-hosted at `/assets/fonts/*.woff2`, loaded via `@font-face` in the first
-inline `<style>` block of each page. Only the "latin" Google Fonts subset was pulled
-(plain English text + basic punctuation covers everything this site uses) — if you
-ever add non-Latin text, re-fetch the fuller subset from
+400) are self-hosted at `/assets/fonts/*.woff2`, loaded via `@font-face` in
+`assets/site.css`. Only the "latin" Google Fonts subset was pulled (plain English text
++ basic punctuation covers everything this site uses) — if you ever add non-Latin
+text, re-fetch the fuller subset from
 `https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Serif:ital@0;1&display=swap`
 with a browser User-Agent header to get current woff2 URLs, since Google rotates them.
 
@@ -59,20 +117,34 @@ with a browser User-Agent header to get current woff2 URLs, since Google rotates
 Most tool/GTM logos are self-hosted at `/assets/logos/NN-name.png` (160×160 PNGs) to
 avoid depending on a third-party CDN staying up (this replaced an earlier setup that
 hotlinked Webflow's S3 CDN). Prefer self-hosting for any new logo when your environment
-can actually fetch and save the image.
+can actually fetch and save the image — see the note below about sandbox network
+policy blocking this in Claude Code sessions so far.
 
-### logo.dev API — still hotlinked (GitHub, AI Ark, Gamma, Cal.com, Calendly)
+### logo.dev API — still hotlinked (GitHub, AI Ark, Gamma, Cal.com, Calendly, OpenAI)
 
-5 logos (GitHub, AI Ark, Gamma, Cal.com, Calendly) are still loaded live from
-`img.logo.dev` rather than self-hosted — not by choice, but because every Claude Code
-session so far that touched this repo has run in a sandbox whose network egress policy
-blocks `img.logo.dev` and the tool vendors' own domains outright (confirmed twice,
-including testing `github.com/favicon.ico` etc. directly — also blocked). If a future
-session has broader network access, download these 5 as 160×160 PNGs into
-`/assets/logos/` following the `NN-name.png` convention, swap the `<img src>`s to local
-paths, and remove the logo.dev attribution line once none of the marquee depends on it.
-(A 6th logo, OpenAI, was removed entirely — it duplicated the already-self-hosted Codex
-mark, which is also OpenAI's logo.)
+6 logos are still loaded live from `img.logo.dev` rather than self-hosted — not by
+choice, but because every Claude Code session so far that touched this repo has run in
+a sandbox whose network egress policy blocks `img.logo.dev` and the tool vendors' own
+domains outright (confirmed repeatedly, including testing `github.com/favicon.ico`
+directly — also blocked). If a future session has broader network access, download
+these as 160×160 PNGs into `/assets/logos/` following the `NN-name.png` convention,
+swap the `<img src>`s to local paths, and remove the logo.dev attribution line once
+nothing in the marquee depends on it anymore.
+
+The OpenAI tile specifically uses `&theme=dark` for a white/light variant of the mark
+that's visible against the dark background (OpenAI's default mark is black). Don't
+confuse it with the self-hosted Codex logo (`07-codex.png`) — Codex was removed from
+the marquee at one point as a "duplicate" of OpenAI, then the OpenAI tile was
+mistakenly removed instead in a later pass — the OpenAI (white, theme=dark) tile is
+the one that should stay; Codex is no longer in the marquee.
+
+**Also pending user upload** (as of the last session): Canva, Zapier, Obsidian,
+Notion, ClickUp, Coda, Miro, and Whisper were requested but the images were pasted
+inline in chat rather than attached as files — Claude Code sessions can *see* pasted
+images but cannot read their raw bytes off disk, so nothing was saved. These need to
+be sent as actual file attachments/uploads before they can be added to
+`/assets/logos/` (or hotlinked via logo.dev if self-hosting isn't possible in that
+session either).
 
 Publishable key (client-safe, meant to be inlined in `<img src>` — not a secret):
 
@@ -81,8 +153,24 @@ pk_BoDdLTqTSaaLs0t57KZ1hA
 ```
 
 Usage: `https://img.logo.dev/<domain>?token=pk_BoDdLTqTSaaLs0t57KZ1hA&size=160&format=png`
+(add `&theme=dark` for a variant meant for dark backgrounds, as used for OpenAI).
 Docs: https://www.logo.dev/docs/logo-images/introduction
 
 Free tier requires an attribution link back to logo.dev for commercial use — that's
-the small "tool logos via logo.dev" line under the homepage marquee. Once all logos
-are self-hosted, that line (and this section) can go.
+the small "tool logos via logo.dev" line in the footer. Once all logos are
+self-hosted, that line (and this section) can go.
+
+## content-v3 rollout status
+
+`content-v3.md` (the full redesign/rewrite spec) is being rolled out in the phases it
+defines in its own "build order" section. Done so far: sitewide changes (bands,
+contact block, footer, results strip, "at cleverviral"), mobile nav, and the homepage
+copy rewrite + reorder. **Not yet done** (needs user-supplied content before it can
+be): the /projects "other three" testimonials (zoë merchant, aditya singh, tushita
+jolly — no quote text available yet), the-adhd-thing as a writing hub with real posts
+(current posts are single paragraphs; doc wants them "expanded with you before
+published"), and /skills-md real downloads (needs actual `SKILL.md` files — none
+exist yet). The rest of /projects' own copy cleanup (eyebrow/h1 change, dropping the
+now-line duplicate, the full case-study template) and the mobile layout pass beyond
+the nav (results-strip mobile sizing, touch-specific tweaks) also haven't been done
+yet — see content-v3.md section 7 for the intended order.
