@@ -120,16 +120,17 @@ hotlinked Webflow's S3 CDN). Prefer self-hosting for any new logo when your envi
 can actually fetch and save the image — see the note below about sandbox network
 policy blocking this in Claude Code sessions so far.
 
-### logo.dev API — still hotlinked (GitHub, Cal.com, Calendly, OpenAI)
+### logo.dev API — still hotlinked (OpenAI only)
 
-4 logos are still loaded live from `img.logo.dev` rather than self-hosted — not by
-choice, but because every Claude Code session so far that touched this repo has run in
-a sandbox whose network egress policy blocks `img.logo.dev` and the tool vendors' own
-domains outright (confirmed repeatedly, including testing `github.com/favicon.ico`
-directly — also blocked). If a future session has broader network access, download
-these as 160×160 PNGs into `/assets/logos/` following the `NN-name.png` convention,
-swap the `<img src>`s to local paths, and remove the logo.dev attribution line once
-nothing in the marquee depends on it anymore.
+1 logo (OpenAI) is still loaded live from `img.logo.dev` rather than self-hosted — not
+by choice, but because every Claude Code session so far that touched this repo has run
+in a sandbox whose network egress policy blocks `img.logo.dev` and the tool vendors'
+own domains outright (confirmed repeatedly, including testing `github.com/favicon.ico`
+directly — also blocked). Every other logo that used to be on this list (GitHub,
+Cal.com, Calendly, AI Ark, Gamma) is now self-hosted, once the user sent real files.
+If a future session gets an OpenAI file too, download it as a 160×160 PNG into
+`/assets/logos/`, swap the `<img src>`, and remove the logo.dev attribution
+line/section entirely, since nothing will depend on it anymore.
 
 The OpenAI tile specifically uses `&theme=dark` for a white/light variant of the mark
 that's visible against the dark background (OpenAI's default mark is black). Don't
@@ -138,24 +139,28 @@ confuse it with the self-hosted Codex logo (`07-codex.png`, no longer in the mar
 mistakenly removed instead in a later pass; the OpenAI (white, theme=dark) tile is the
 one that should stay.
 
-**Self-hosted from user-uploaded files**: `24-excalidraw.png`, `25-miro.png`,
-`26-ai-ark.png`, `27-gamma.png`, `28-canva.png` — these came in as real file
-attachments (not pasted inline), which do land on disk and can be read/resized
-(Pillow, `pip install Pillow`, since no image tooling is preinstalled).
+**Self-hosted from user-uploaded files** (all 160×160 PNGs, converted with Pillow —
+`pip install Pillow`, since no image tooling is preinstalled): `24-excalidraw.png`,
+`25-miro.png`, `26-ai-ark.png`, `27-gamma.png`, `28-canva.png`, `29-github.png`,
+`30-calendly.png`, `31-calcom.png`, `32-clickup.png`, `33-coda.png`, `34-notion.png`,
+`35-obsidian.png`, `36-wispr.png`, `37-zapier.png`. `36-wispr.png` is Wispr Flow (the
+voice-dictation app) — the user asked for "whisper" but the file they uploaded is
+branded "wispr", so that's what's live; check with them if OpenAI's Whisper was
+actually meant instead.
 
 **A recurring gotcha worth flagging to the user proactively**: whether a pasted image
 lands as a readable file is inconsistent turn to turn in this chat client — sometimes
 inline-pasted images arrive with a `[Image: source: /path/to/file]` tag (readable,
 usable), other times the exact same paste method produces no file at all (visible to
 Claude, but nothing on disk). There's no reliable way to tell in advance which will
-happen, so always check for a `source:` path before assuming an image is usable, and
-if one isn't there, ask the user to resend — don't guess or fabricate a placeholder.
-
-**Still pending as of the last session** (sent as inline pastes with no `source:` path,
-so nothing was saved): Zapier, Obsidian, Notion, Coda, ClickUp, Whisper, and a
-dark-background Cal.com variant. Domains for a logo.dev stopgap, if wanted before real
-files arrive: zapier.com, obsidian.md, notion.so, coda.io, clickup.com — Whisper has no
-obvious standalone domain (likely OpenAI's, which is already represented).
+happen, so always check for a `source:` path before assuming an image is usable, and if
+one isn't there, ask the user to resend — don't guess or fabricate a placeholder. The
+reliable fallback that worked in the end: the user uploaded the files directly to
+`assets/logos/` via GitHub's web UI ("Add files via upload"), with arbitrary names
+(`Ai ark.png`, `cal_com_logo.jpeg`, etc.) — a future session should `git pull`, check
+for files in `assets/logos/` that don't match the `NN-name.png` convention, resize them
+to 160×160 PNGs with sequential numbers, delete the raw originals, and wire up the
+`<img src>`s, rather than assuming logos only ever arrive via chat.
 
 Publishable key (client-safe, meant to be inlined in `<img src>` — not a secret):
 
