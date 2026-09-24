@@ -120,9 +120,9 @@ hotlinked Webflow's S3 CDN). Prefer self-hosting for any new logo when your envi
 can actually fetch and save the image — see the note below about sandbox network
 policy blocking this in Claude Code sessions so far.
 
-### logo.dev API — still hotlinked (GitHub, AI Ark, Gamma, Cal.com, Calendly, OpenAI)
+### logo.dev API — still hotlinked (GitHub, Cal.com, Calendly, OpenAI)
 
-6 logos are still loaded live from `img.logo.dev` rather than self-hosted — not by
+4 logos are still loaded live from `img.logo.dev` rather than self-hosted — not by
 choice, but because every Claude Code session so far that touched this repo has run in
 a sandbox whose network egress policy blocks `img.logo.dev` and the tool vendors' own
 domains outright (confirmed repeatedly, including testing `github.com/favicon.ico`
@@ -133,18 +133,29 @@ nothing in the marquee depends on it anymore.
 
 The OpenAI tile specifically uses `&theme=dark` for a white/light variant of the mark
 that's visible against the dark background (OpenAI's default mark is black). Don't
-confuse it with the self-hosted Codex logo (`07-codex.png`) — Codex was removed from
-the marquee at one point as a "duplicate" of OpenAI, then the OpenAI tile was
-mistakenly removed instead in a later pass — the OpenAI (white, theme=dark) tile is
-the one that should stay; Codex is no longer in the marquee.
+confuse it with the self-hosted Codex logo (`07-codex.png`, no longer in the marquee)
+— Codex was removed at one point as a "duplicate" of OpenAI, then the OpenAI tile was
+mistakenly removed instead in a later pass; the OpenAI (white, theme=dark) tile is the
+one that should stay.
 
-**Also pending user upload** (as of the last session): Canva, Zapier, Obsidian,
-Notion, ClickUp, Coda, Miro, and Whisper were requested but the images were pasted
-inline in chat rather than attached as files — Claude Code sessions can *see* pasted
-images but cannot read their raw bytes off disk, so nothing was saved. These need to
-be sent as actual file attachments/uploads before they can be added to
-`/assets/logos/` (or hotlinked via logo.dev if self-hosting isn't possible in that
-session either).
+**Self-hosted from user-uploaded files**: `24-excalidraw.png`, `25-miro.png`,
+`26-ai-ark.png`, `27-gamma.png`, `28-canva.png` — these came in as real file
+attachments (not pasted inline), which do land on disk and can be read/resized
+(Pillow, `pip install Pillow`, since no image tooling is preinstalled).
+
+**A recurring gotcha worth flagging to the user proactively**: whether a pasted image
+lands as a readable file is inconsistent turn to turn in this chat client — sometimes
+inline-pasted images arrive with a `[Image: source: /path/to/file]` tag (readable,
+usable), other times the exact same paste method produces no file at all (visible to
+Claude, but nothing on disk). There's no reliable way to tell in advance which will
+happen, so always check for a `source:` path before assuming an image is usable, and
+if one isn't there, ask the user to resend — don't guess or fabricate a placeholder.
+
+**Still pending as of the last session** (sent as inline pastes with no `source:` path,
+so nothing was saved): Zapier, Obsidian, Notion, Coda, ClickUp, Whisper, and a
+dark-background Cal.com variant. Domains for a logo.dev stopgap, if wanted before real
+files arrive: zapier.com, obsidian.md, notion.so, coda.io, clickup.com — Whisper has no
+obvious standalone domain (likely OpenAI's, which is already represented).
 
 Publishable key (client-safe, meant to be inlined in `<img src>` — not a secret):
 
