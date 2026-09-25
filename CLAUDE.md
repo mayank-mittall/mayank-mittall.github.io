@@ -14,7 +14,7 @@ Copy conventions: lowercase, no em-dashes, no slogans or jabs at "other people"
 ```
 index.html              homepage
 projects/index.html     projects page
-projects/<slug>/index.html  case study pages (11, see content-v4 section below)
+projects/<slug>/index.html  case study pages (9, see content-v4/fixes-round-2 sections)
 skills-md/index.html    skills page
 the-adhd-thing/index.html
 404.html                custom 404
@@ -86,9 +86,9 @@ override inline — `grep` the class name across all 5 HTML files and `assets/si
   outcome." The `tool logos via logo.dev` credit stays in the footer, not here.
 - /projects has no filter chips anymore (`.chips`/`#pf` and its JS were removed
   entirely — the sticky solid-background bar was rendering as a visible dark box over
-  the ember glow). All 15 rows (as of content-v4, see below) are one plain
-  `<ul class='work'>` list, unfiltered, in their original order (8 named/linked
-  cleverviral engagements, 4 unnamed plain rows, then xeno/scrollmark/airblack).
+  the ember glow). All 11 rows (as of content-v4 + fixes-round-2, see below) are one
+  plain `<ul class='work'>` list, unfiltered, in their original order (6 named/linked
+  cleverviral engagements, 2 unnamed plain rows, then xeno/scrollmark/airblack).
 
 ## Mobile nav
 
@@ -217,8 +217,8 @@ writing hub with real posts (current posts are single paragraphs; doc wants them
 `content-v4-work.md` builds on content-v3.md and replaces its project rows and its
 case-study plan entirely. Fully rolled out:
 
-- **Source rule**: every client fact/number/play in the 11 case pages comes verbatim
-  from https://cleverviral.co/case-studies (for the 8 cleverviral clients) or the
+- **Source rule**: every client fact/number/play in the case pages comes verbatim
+  from https://cleverviral.co/case-studies (for the cleverviral clients) or the
   user's own LinkedIn (for xeno, scrollmark, airblack, pre-cleverviral). Nothing
   invented — if a page has no published number (scrollmark) or no client quote, it
   simply has no numbers row / no quote block rather than a filler.
@@ -226,26 +226,26 @@ case-study plan entirely. Fully rolled out:
   my part: strategy, targeting and copy.` Mayank is never credited for deliverability
   (run by the cleverviral team) — that's why no case page mentions inbox
   infrastructure/deliverability plays. `fountane` was dropped from the site entirely
-  per an explicit user call (it was the old "3d design service" /projects row).
-- **/projects rows** (15 total, replacing the old 16): 8 named rows link to case pages
-  (`/projects/<slug>/`), 4 rows (`ai marketing agency`, `accounting services firm`,
-  `uk tax-consulting firm`, `logistics (3pl) platform`) stay plain — no link, no hover
-  state (`<div class='plain'>` instead of `<a>`, styled via `.work .plain` alongside
-  `.work a` in `projects/index.html`'s own inline style) — and 3 rows (xeno, scrollmark,
-  airblack) also link to case pages. Homepage "selected work" mirrors 4 of these
-  (speedsize, itamg, trynow, xeno) with identical outcome text.
-- **Case page template** (`projects/<slug>/index.html`, 11 pages: speedsize, trynow,
-  itamg, fitmanager, tattoo-numbing-cream-co, hector-ai, virtu3d, caveminds, xeno,
-  scrollmark, airblack): back link, eyebrow + h1, role line, up to 3 big numbers
+  per an explicit user call (it was the old "3d design service" /projects row, before
+  content-v4 even shipped).
+- **/projects rows** (11 total after the fixes-round-2 cut below — see that section):
+  named rows link to case pages (`/projects/<slug>/`), plain rows (`ai marketing
+  agency`, `accounting services firm`) stay plain — no link, no hover state
+  (`<div class='plain'>` instead of `<a>`, styled via `.work .plain` alongside
+  `.work a` in `projects/index.html`'s own inline style). Homepage "selected work"
+  mirrors 4 of these (speedsize, itamg, trynow, xeno) with identical outcome text.
+- **Case page template** (`projects/<slug>/index.html`, 9 pages after fixes-round-2 —
+  speedsize, trynow, itamg, fitmanager, hector-ai, virtu3d, xeno, scrollmark,
+  airblack): back link, eyebrow + h1, role line, up to 3 big numbers
   (`.cnums`/`.cnum`), "the situation" (only where the doc gives one — xeno/scrollmark/
   airblack skip it, they only have "what i did" steps from LinkedIn), numbered steps
   (`.csteps`, muted result line after where the doc gives one), an optional "an opener
   that worked" quote block (`.copener`), an optional client quote (`.cquote`), a `full
-  case study on cleverviral.co ↗` link (the 8 cleverviral pages only — xeno/scrollmark/
-  airblack have no such link), and a "next project →" link chasing the doc's own row
-  order, wrapping from airblack back to speedsize. All the `.case`/`.cback`/`.ceyebrow`/
+  case study on cleverviral.co ↗` link (the cleverviral pages only — xeno/scrollmark/
+  airblack have no such link), and a "next project →" link chasing the row order,
+  wrapping from airblack back to speedsize. All the `.case`/`.cback`/`.ceyebrow`/
   `.cnums`/`.cnum`/`.cbody`/`.csteps`/`.copener`/`.cquote`/`.cfull`/`.cnext` rules live in
-  `assets/site.css` (byte-identical across all 11 pages); each page still carries its
+  `assets/site.css` (byte-identical across all case pages); each page still carries its
   own small inline `<style>` for the `.poster`/`.btn`/`.contact`/`footer` rules, matching
   the existing per-page-duplication pattern used by the other 5 pages (this predates
   content-v4 and wasn't refactored as part of it).
@@ -272,16 +272,86 @@ case-study plan entirely. Fully rolled out:
   styles. Fixed by scoping it to `.cnum>span` (direct child only). If you add another
   `.hand`-wrapped element nested inside a styled parent, check for this same kind of
   accidental descendant-selector collision.
-- **sitemap.xml**: all 11 new case-page URLs added.
+- **sitemap.xml**: all new case-page URLs added (see fixes-round-2 for the current
+  final list, after 2 of the original 11 case pages were deleted).
 
 **Known limitation, unresolved**: this sandbox's egress policy blocks `cleverviral.co`
 outright (`curl` returns `CONNECT tunnel failed, response 403` / proxy `connect_rejected`
-for both the base `/case-studies` page and all 8 individual client slugs, confirmed
+for both the base `/case-studies` page and all individual client slugs, confirmed
 repeatedly across sessions) — the same pattern as the `img.logo.dev` block documented
 above. content-v4-work.md's own build order ends with "check every cleverviral.co link
 opens, then publish"; that verification step could not be performed from inside this
-sandbox. The 8 links were implemented exactly as given in the spec and are believed
-correct (the user stated they read cleverviral.co/case-studies directly on 2026-09-25),
-but a future session with working egress to cleverviral.co — or the user themselves —
-should do a final click-through pass on all 8 external links before treating this as
-fully verified.
+sandbox. The cleverviral.co links were implemented exactly as given in the spec and are
+believed correct (the user stated they read cleverviral.co/case-studies directly on
+2026-09-25, and fixes-round-2.md's own audit — presumably run with real browser access —
+separately confirmed "all cleverviral.co case study links point to real pages" and that
+the remaining case pages' numbers match cleverviral's published figures), but this
+sandbox itself still cannot independently verify that.
+
+## fixes round 2 (2026-09-25, same day as content-v4)
+
+`fixes-round-2.md` was a user-run audit of the live content-v4 site plus one more
+explicit content change. Rolled out:
+
+- **4 projects removed entirely, per Mayank's own call**: caveminds,
+  tattoo-numbing-cream-co, "logistics (3pl) platform", and "uk tax-consulting firm" are
+  gone from /projects, the homepage, sitemap.xml and their case-page folders deleted
+  (`projects/caveminds/`, `projects/tattoo-numbing-cream-co/` — `git rm -r`'d, not just
+  unlinked). /projects is now **11 rows**: speedsize, trynow, itamg, fitmanager,
+  hector ai, virtu3d, ai marketing agency (plain), accounting services firm (plain),
+  xeno, scrollmark, airblack — renumbered 01-11 in that order. Remaining case pages:
+  speedsize, trynow, itamg, fitmanager, hector-ai, virtu3d, xeno, scrollmark, airblack
+  (9 total). The "next project" chain now runs speedsize → trynow → itamg → fitmanager →
+  **hector-ai** → virtu3d → **xeno** → scrollmark → airblack → speedsize (fitmanager's
+  and virtu3d's `next` links were repointed since their old targets no longer exist).
+- **Hand-drawn loop no longer cuts through letters**: `.hand[data-hand="loop"] svg`'s
+  box was too flat/short. Fixed in `assets/site.css`: `.hand{isolation:isolate}`,
+  `.hand svg{z-index:-1}` (draw behind the text, not through it), and the loop box
+  enlarged to `left:-10%;top:-34%;width:120%;height:168%`. Verified at 375/768/1440 on
+  both "handled." and "problem" — the stroke now clears the capitals everywhere except
+  the intentional gap at the loop's start/end.
+- **Hand-drawn marks inside a headline no longer draw before the word appears**: the
+  hand-marks IIFE in `assets/site.js` now splits `.hand` elements into two groups —
+  `standalone` (own IntersectionObserver, unchanged: this is every case page's number
+  mark, since numbers aren't inside a `[data-reveal="lines"]` heading) and `linked`
+  (any `.hand` whose closest ancestor has `[data-reveal="lines"]` — the hero "handled.",
+  homepage "work", every page's contact "problem", skills.md's ".md"). For `linked`
+  marks, a `MutationObserver` watches the heading for Ember Motion's own `.is-in` class
+  (added when the heading's word-mask reveal starts) and only then starts a 1.2s
+  `setTimeout` before adding `.is-drawn` — instead of the mark's own scroll-observer
+  firing independently and racing the ~1.1s word reveal. Verified via computed
+  `strokeDashoffset` sampling over time that the loop stays fully undrawn until well
+  after the heading reports `is-in`.
+- **Hero and contact-block "let's talk →" are now solid**, matching the header's ember
+  treatment: the base `.btn{...}` rule (duplicated inline per page, same
+  per-page-duplication pattern as `.poster`/`.contact`/`footer` — see the content-v4
+  section above) changed from an outline box (`background:none;color:var(--text)`) to
+  solid (`background:var(--ember);color:var(--bg)`), and `.btn.ghost` now explicitly
+  overrides back to the outline treatment (`background:none;color:var(--text)`) so
+  "see the work", "email" and "linkedin" are unaffected. This is a sitewide change (all
+  14 pages carry their own copy of this block) — every bare `.btn` (not `.ghost`) is now
+  solid, which also includes the full-width mobile-menu CTA and skills.md's drawer
+  "dm ... on linkedin" button, both intentionally, for consistency.
+- **skills.md's filter chips are now generated from `SKILLS`, not hardcoded**: the
+  `<div class='schips' id='sf'>` markup is now empty in HTML; its inline script builds
+  `all` plus one chip per distinct `cat` actually present in the `SKILLS` array (using
+  that category's own `catlabel`), so a chip can never point at zero skills again. This
+  is also what silently absorbed the `deliverability` chip once
+  `deliverability-triage.skill` was removed in content-v4 — no more empty-grid trap.
+- **Mobile menu overlay is `inert` while closed**: `<div class='mmenu' id='mmenu'
+  aria-hidden='true' inert>` in the markup of all 14 pages, with `assets/site.js`'s
+  `open()`/`close()` removing/re-adding the `inert` attribute alongside the existing
+  `aria-hidden` toggle. Verified Tab order from page load never reaches `.mmenu-close`
+  while the overlay is closed, and that closing (Esc, link click, or the close button)
+  restores `inert`.
+- **Hero proof strip no longer wraps unevenly on mobile**: added
+  `@media(max-width:600px){.proof{flex-direction:column;align-items:flex-start}}` to
+  the shared `.proof` rule in `assets/site.css` — under 600px the three stats stack as
+  a left-aligned list, one per line, instead of wrapping 1-then-2 centered.
+
+Verified: `node --check` on site.js, HTML tag balance and no em-dashes sitewide, a
+Playwright pass across all 14 remaining pages at 1440/768/375px (zero console/page
+errors besides the pre-existing img.logo.dev block, zero horizontal overflow at any
+width), the full next-project chain followed end-to-end (all 200s, closes the loop),
+and the specific interaction checks called out above (hand-mark timing, inert/tab
+order, chip list, button fill).

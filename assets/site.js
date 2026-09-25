@@ -171,12 +171,14 @@
   const links = menu.querySelectorAll('a');
   const open = () => {
     menu.classList.add('is-open'); menu.setAttribute('aria-hidden', 'false');
+    menu.removeAttribute('inert');
     btn.setAttribute('aria-expanded', 'true');
     document.documentElement.style.overflow = 'hidden';
     if (closeBtn) closeBtn.focus();
   };
   const close = () => {
     menu.classList.remove('is-open'); menu.setAttribute('aria-hidden', 'true');
+    menu.setAttribute('inert', '');
     btn.setAttribute('aria-expanded', 'false');
     document.documentElement.style.overflow = '';
     btn.focus();
@@ -328,7 +330,26 @@
     const k = el.dataset.hand; if (!P[k]) return;
     el.insertAdjacentHTML('beforeend', `<svg viewBox="${V[k]}" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="${P[k]}"/></svg>`);
   });
+  const standalone = [];
+  const linked = new Map();
+  document.querySelectorAll('.hand').forEach(el => {
+    const heading = el.closest('[data-reveal="lines"]');
+    if (heading) {
+      if (!linked.has(heading)) linked.set(heading, []);
+      linked.get(heading).push(el);
+    } else {
+      standalone.push(el);
+    }
+  });
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-drawn'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -15% 0px' });
-  document.querySelectorAll('.hand').forEach(el => io.observe(el));
+  standalone.forEach(el => io.observe(el));
+  const drawAfterReveal = (heading, hands) => setTimeout(() => hands.forEach(h => h.classList.add('is-drawn')), 1200);
+  linked.forEach((hands, heading) => {
+    if (heading.classList.contains('is-in')) { drawAfterReveal(heading, hands); return; }
+    const mo = new MutationObserver(() => {
+      if (heading.classList.contains('is-in')) { mo.disconnect(); drawAfterReveal(heading, hands); }
+    });
+    mo.observe(heading, { attributes: true, attributeFilter: ['class'] });
+  });
 })();
 
