@@ -67,7 +67,9 @@ index.html              homepage
 projects/index.html     projects page
 projects/<slug>/index.html  case study pages (10, see content-v4/fixes-round-2/fixes-round-3 sections)
 skills-md/index.html    skills page
-the-adhd-thing/index.html
+the-adhd-thing/index.html    writing hub (see adhd-content-v1 section)
+the-adhd-thing/<slug>/index.html  posts (3 so far: not-a-superpower, one-capture-point,
+                        externalize-everything — 4 more planned, need Mayank's answers first)
 404.html                custom 404
 assets/site.css          shared CSS (Ember Motion/Field, base reset, nav, results strip, mobile menu)
 assets/site.js           shared JS (same systems + mobile menu logic)
@@ -261,11 +263,13 @@ merchant's quote was originally the third card here too, but fixes-round-3 moved
 onto the new `/projects/bright/` case page (she's bright's managing director), so it
 no longer appears on /projects itself.
 
-**Not yet done** (needs user-supplied content before it can be): the-adhd-thing as a
-writing hub with real posts (current posts are single paragraphs; doc wants them
-"expanded with you before published"), and /skills-md real downloads (needs actual
-`SKILL.md` files — none exist yet). The mobile layout pass beyond the nav
-(results-strip mobile sizing, touch-specific tweaks) also hasn't been done yet.
+**Not yet done**: /skills-md real downloads (needs actual `SKILL.md` files — none exist
+yet). The mobile layout pass beyond the nav (results-strip mobile sizing,
+touch-specific tweaks) also hasn't been done yet. the-adhd-thing's writing-hub
+conversion (this section originally listed it as needing user-supplied content first)
+is now done as of adhd-content-v1 — see that section below — though only 3 of the
+planned 7 posts are live; the other 4 still need Mayank's answers to the doc's own
+questions before they can be written.
 
 ## content-v4 rollout status ("the work": projects + case pages)
 
@@ -510,3 +514,73 @@ page source; confirmed no `cleverviral.co/case-studies` links remain; confirmed 
 files; `node --check` on site.js; the full next-project chain followed end-to-end
 (closes the loop, all resolve). The reversible mapping above is what a future
 "switch to named" pass reads from.
+
+## adhd-content-v1 (the-adhd-thing becomes a writing hub)
+
+`adhd-content-v1.md` converted the-adhd-thing from a single long page (a hero, an
+inline "not a superpower" reframe, a 6-item "what i actually do" skim-mode list, a
+"where to start" list and the footer disclaimer) into a hub-plus-posts structure, per
+content-v3.md section 4. The doc's own facts all trace back to Mayank's canonical
+`personal-website/webflow/adhd-copy.md`; nothing else about his life was added.
+
+- **Hub page rewrite** (`the-adhd-thing/index.html`): hero is now just h1 `the adhd
+  thing.`, sub `notes on working with adhd: what's helped me, and ai tools you can
+  try.`, and a small italic disclaimer line `lived experience, not medical advice.`
+  right under it (`.adhddisc`). The old `#reframe` section (an inline copy of what is
+  now the first post) and `#systems` section (the 6-item skim-mode list, including its
+  `localStorage`-backed toggle button and inline script) are both gone entirely. In
+  their place, a `#writing` section lists posts as linked blocks (`.wposts` — title in
+  serif italic, one-line summary, read time + tag, the whole block is the link),
+  currently just the 3 launched posts. `#wheretostart` (the 5-item resource list) and
+  the footer disclaimer paragraph (`.disc`, "i'm a gtm professional, not a
+  clinician...") are unchanged, per the doc's own "keep it as it is" / "keep"
+  instructions for those two.
+- **3 new post pages** at `the-adhd-thing/<slug>/index.html` — `not-a-superpower`,
+  `one-capture-point`, `externalize-everything` — each with: a `← the adhd thing` back
+  link, a date/read-time line, an h1, a tl;dr box (`.tldr`), body copy under h2s
+  (`.pbody`, 65ch reading width, 17px), a "try this" box (`.trybox`) with the prompt in
+  an italic quote block (`.tryprompt`) plus a `.trycopy` button using the exact same
+  `data-cursor='copy' data-copy='...'` copy-to-clipboard mechanism as the contact
+  block's email button (just without `data-mailto`, since there's nothing to launch
+  after copying) — verified it actually writes plain-text (straight quotes, not curly)
+  to the clipboard so a pasted prompt reads naturally in a chat box, and prev/next post
+  navigation (`.postnav`) that only shows a link where one exists (post 1 has no
+  previous, post 3 has no next yet). All shared markup/CSS for this template
+  (`.post`/`.pback`/`.pmeta2`/`.tldr`/`.pbody`/`.trybox`/`.trylabel`/`.tryprompt`/
+  `.trycopy`/`.postnav`) lives in `assets/site.css`, per the doc's own build note to use
+  one shared template. Posts 4 to 7 (`nets, not resolutions`, `manufacture pressure`,
+  `spend hyperfocus, don't fight it`, `own the range`) are **not built** — the doc is
+  explicit that each needs Mayank's answers to its own seed questions first ("nothing
+  goes in that you didn't say"), and none have been answered in this session. Do not
+  invent answers to those questions or list those posts on the hub before they exist.
+- **`[confirm]` tags resolved by cutting**, per the doc's own build note ("every
+  `[confirm]` is resolved or cut") — no answer was available in this session, so rather
+  than guess:
+  - one-capture-point originally had "it works because slack is already open all day.
+    `[confirm: is that the real reason? if not, give me yours.]`" — the confirm-flagged
+    sentence was cut; the paragraph now just says capture has to be faster than
+    forgetting, without asserting a specific reason.
+  - one-capture-point also had a standalone `[confirm: do you sort your slack dm with
+    ai, or by hand?...]` question — cut entirely; that section stays general, as the doc
+    itself said it would if unanswered.
+- **No ember field and no hand-drawn marks on any adhd page** (hub or posts), per the
+  doc's build note that these pages "stay calm": `data-field='off'` is set on both
+  `<main>` and the shared contact section on all 4 pages (the-adhd-thing's `<main>`
+  previously said `data-field='calm'`, which is a *dampened* level, not off — since the
+  ember-field system defaults zones with no `[data-field]` coverage to full intensity
+  rather than none, `off` had to be set explicitly, and on both the main content zone
+  and the contact-section zone, to guarantee zero field for the whole scroll length of
+  these pages, not just while `<main>` itself is in view). No `.hand` marks appear
+  anywhere on these 4 pages, consistent with the pre-existing the-adhd-thing exemption
+  noted in the content-v4 section above (this page's `#contact` h2 stays plain,
+  unlike every other page's, which get the "problem" loop mark).
+- **sitemap.xml**: added the 3 new post URLs.
+
+Verified: HTML tag balance and no em-dashes across the hub and all 3 posts; no
+`[confirm]` tags remain; none of the doc's own banned strings ("wired to panic",
+childhood, delhi) appear anywhere; a Playwright pass across the hub, all 3 posts, and
+the other main pages at 1440/375px (zero console errors besides the pre-existing
+img.logo.dev block, zero horizontal overflow); the prev/next chain across the 3 posts
+resolves correctly with no dangling links at either end; and the copy-prompt button
+verified end-to-end (click → `.is-copied` class → clipboard contents match the intended
+plain-text prompt, straight quotes included).
