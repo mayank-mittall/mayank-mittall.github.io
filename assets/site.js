@@ -270,11 +270,12 @@
 
 (() => {
   const RESULTS = [
-    ['$1.9m+', 'pipeline for a media-infrastructure saas'],
-    ['0.10% → 22.9%', 'positive reply rate'],
-    ['$6k+', 'new mrr in 30 days'],
+    ['$1.9m+', 'pipeline for speedsize'],
+    ['0.1% → 22.9%', 'positive replies for itamg'],
+    ['237', 'qualified leads for trynow'],
+    ['173', 'qualified leads for fitmanager'],
+    ['10.15%', 'peak positive reply rate for speedsize'],
     ['4.2% → 9.6%', 'reply rate on the same list'],
-    ['237', 'qualified opportunities in 11 months'],
     ['+178%', 'website traffic at xeno'],
     ['$1.4m/quarter', 'sql pipeline at xeno']
   ];
@@ -315,5 +316,19 @@
     };
     requestAnimationFrame(tick);
   });
+})();
+
+(() => {
+  const P = {
+    loop: 'M58 6C30 3 6 12 4 27s22 25 52 25 52-7 54-21S88 3 52 5c-9 1-16 3-21 6',
+    under: 'M2 7c22-3 48-4 74-3 9 0 15 1 22-2'
+  };
+  const V = { loop: '0 0 112 56', under: '0 0 100 10' };
+  document.querySelectorAll('.hand[data-hand]').forEach(el => {
+    const k = el.dataset.hand; if (!P[k]) return;
+    el.insertAdjacentHTML('beforeend', `<svg viewBox="${V[k]}" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="${P[k]}"/></svg>`);
+  });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-drawn'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -15% 0px' });
+  document.querySelectorAll('.hand').forEach(el => io.observe(el));
 })();
 

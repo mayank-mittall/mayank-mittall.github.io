@@ -14,6 +14,7 @@ Copy conventions: lowercase, no em-dashes, no slogans or jabs at "other people"
 ```
 index.html              homepage
 projects/index.html     projects page
+projects/<slug>/index.html  case study pages (11, see content-v4 section below)
 skills-md/index.html    skills page
 the-adhd-thing/index.html
 404.html                custom 404
@@ -85,8 +86,9 @@ override inline — `grep` the class name across all 5 HTML files and `assets/si
   outcome." The `tool logos via logo.dev` credit stays in the footer, not here.
 - /projects has no filter chips anymore (`.chips`/`#pf` and its JS were removed
   entirely — the sticky solid-background bar was rendering as a visible dark box over
-  the ember glow). All 16 rows are one plain `<ul class='work'>` list, unfiltered, in
-  their original order (13 cleverviral engagements, then xeno/scrollmark/airblack).
+  the ember glow). All 15 rows (as of content-v4, see below) are one plain
+  `<ul class='work'>` list, unfiltered, in their original order (8 named/linked
+  cleverviral engagements, 4 unnamed plain rows, then xeno/scrollmark/airblack).
 
 ## Mobile nav
 
@@ -207,6 +209,79 @@ supplied, not the doc's names, if they ever conflict again.)
 **Not yet done** (needs user-supplied content before it can be): the-adhd-thing as a
 writing hub with real posts (current posts are single paragraphs; doc wants them
 "expanded with you before published"), and /skills-md real downloads (needs actual
-`SKILL.md` files — none exist yet). The full case-study page template and the mobile
-layout pass beyond the nav (results-strip mobile sizing, touch-specific tweaks) also
-haven't been done yet — see content-v3.md section 7 for the intended order.
+`SKILL.md` files — none exist yet). The mobile layout pass beyond the nav
+(results-strip mobile sizing, touch-specific tweaks) also hasn't been done yet.
+
+## content-v4 rollout status ("the work": projects + case pages)
+
+`content-v4-work.md` builds on content-v3.md and replaces its project rows and its
+case-study plan entirely. Fully rolled out:
+
+- **Source rule**: every client fact/number/play in the 11 case pages comes verbatim
+  from https://cleverviral.co/case-studies (for the 8 cleverviral clients) or the
+  user's own LinkedIn (for xeno, scrollmark, airblack, pre-cleverviral). Nothing
+  invented — if a page has no published number (scrollmark) or no client quote, it
+  simply has no numbers row / no quote block rather than a filler.
+- **Role honesty**: every cleverviral case page carries the role line `at cleverviral ·
+  my part: strategy, targeting and copy.` Mayank is never credited for deliverability
+  (run by the cleverviral team) — that's why no case page mentions inbox
+  infrastructure/deliverability plays. `fountane` was dropped from the site entirely
+  per an explicit user call (it was the old "3d design service" /projects row).
+- **/projects rows** (15 total, replacing the old 16): 8 named rows link to case pages
+  (`/projects/<slug>/`), 4 rows (`ai marketing agency`, `accounting services firm`,
+  `uk tax-consulting firm`, `logistics (3pl) platform`) stay plain — no link, no hover
+  state (`<div class='plain'>` instead of `<a>`, styled via `.work .plain` alongside
+  `.work a` in `projects/index.html`'s own inline style) — and 3 rows (xeno, scrollmark,
+  airblack) also link to case pages. Homepage "selected work" mirrors 4 of these
+  (speedsize, itamg, trynow, xeno) with identical outcome text.
+- **Case page template** (`projects/<slug>/index.html`, 11 pages: speedsize, trynow,
+  itamg, fitmanager, tattoo-numbing-cream-co, hector-ai, virtu3d, caveminds, xeno,
+  scrollmark, airblack): back link, eyebrow + h1, role line, up to 3 big numbers
+  (`.cnums`/`.cnum`), "the situation" (only where the doc gives one — xeno/scrollmark/
+  airblack skip it, they only have "what i did" steps from LinkedIn), numbered steps
+  (`.csteps`, muted result line after where the doc gives one), an optional "an opener
+  that worked" quote block (`.copener`), an optional client quote (`.cquote`), a `full
+  case study on cleverviral.co ↗` link (the 8 cleverviral pages only — xeno/scrollmark/
+  airblack have no such link), and a "next project →" link chasing the doc's own row
+  order, wrapping from airblack back to speedsize. All the `.case`/`.cback`/`.ceyebrow`/
+  `.cnums`/`.cnum`/`.cbody`/`.csteps`/`.copener`/`.cquote`/`.cfull`/`.cnext` rules live in
+  `assets/site.css` (byte-identical across all 11 pages); each page still carries its
+  own small inline `<style>` for the `.poster`/`.btn`/`.contact`/`footer` rules, matching
+  the existing per-page-duplication pattern used by the other 5 pages (this predates
+  content-v4 and wasn't refactored as part of it).
+- **Results strip**: `RESULTS` array in `assets/site.js` fully replaced with the
+  content-v4 list (speedsize, itamg, trynow, fitmanager numbers, plus the pre-existing
+  xeno numbers). Hero proof-strip numbers (500k+ emails, 1,000+ opportunities, $2m arr
+  at xeno) are unchanged.
+- **skills-md**: `deliverability-triage.skill` removed from the `SKILLS` array (outside
+  Mayank's own scope per the role-honesty rule above) — 7 skills remain.
+- **Hand-drawn marks** (new design system): `.hand[data-hand="loop"|"under"]` in
+  `assets/site.css` + a standalone IIFE at the end of `assets/site.js` that injects an
+  SVG path into every `.hand` element and adds `.is-drawn` via IntersectionObserver
+  (stroke animates once, 0.9s, on scroll-into-view; shows fully drawn immediately under
+  `prefers-reduced-motion: reduce`). Markup pattern: wrap one word in
+  `<span class="hand" data-hand="loop|under">word</span>`. Placed at: homepage hero
+  "handled." (loop, replacing the old `<em>`-based ember-color treatment), homepage
+  "selected work" → "work" (under), the shared `#contact` h2 → "problem" (loop, on every
+  page that has a contact section), skills.md h1 → ".md" (under), and each case page's
+  first big number (under). the-adhd-thing intentionally has none ("that page stays
+  calm") and neither does 404.html (no contact section there either).
+  **Gotcha hit and fixed**: `.cnum span{...}` (meant to style only the muted label span
+  next to each number) was a descendant selector, so it also matched the `.hand` span
+  nested inside `.cnum b` for the first number, shrinking it to the label's 13px/block
+  styles. Fixed by scoping it to `.cnum>span` (direct child only). If you add another
+  `.hand`-wrapped element nested inside a styled parent, check for this same kind of
+  accidental descendant-selector collision.
+- **sitemap.xml**: all 11 new case-page URLs added.
+
+**Known limitation, unresolved**: this sandbox's egress policy blocks `cleverviral.co`
+outright (`curl` returns `CONNECT tunnel failed, response 403` / proxy `connect_rejected`
+for both the base `/case-studies` page and all 8 individual client slugs, confirmed
+repeatedly across sessions) — the same pattern as the `img.logo.dev` block documented
+above. content-v4-work.md's own build order ends with "check every cleverviral.co link
+opens, then publish"; that verification step could not be performed from inside this
+sandbox. The 8 links were implemented exactly as given in the spec and are believed
+correct (the user stated they read cleverviral.co/case-studies directly on 2026-09-25),
+but a future session with working egress to cleverviral.co — or the user themselves —
+should do a final click-through pass on all 8 external links before treating this as
+fully verified.
