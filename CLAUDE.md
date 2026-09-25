@@ -9,12 +9,63 @@ step.
 Copy conventions: lowercase, no em-dashes, no slogans or jabs at "other people"
 ("not slide decks", "no deck"). State things plainly, let numbers do the work.
 
+## client naming (anonymous until approved)
+
+As of fixes-round-3, the site describes cleverviral's clients by type instead of by
+name — Mayank hasn't cleared naming them with his founder yet. **cleverviral itself
+stays named** (it's his own employer and already on his LinkedIn): the homepage/`/projects`
+"now: head of strategy at cleverviral" line and every case page's role line
+(`at cleverviral · my part: strategy, targeting and copy.`) are unaffected.
+
+This block exists so the switch back to real names is a single pass: when Mayank says
+go, replace each anonymous title/slug below with its real name/slug everywhere this
+file's other sections say to (row titles, h1s, `<title>`, meta description, og/twitter
+tags, results strip, next-project labels, sitemap.xml), restore the removed
+`full case study on cleverviral.co ↗` links and client quotes, and revert the
+generalized brand mentions.
+
+| real name | slug (real) | anonymous title (h1 / row) | slug (anon) | cleverviral url |
+|---|---|---|---|---|
+| speedsize | `speedsize` | ai media cdn for premium stores | `media-cdn` | https://cleverviral.co/case-studies/speedsize |
+| trynow | `trynow` | try-before-you-buy app for shopify | `try-before-you-buy` | https://cleverviral.co/case-studies/trynow |
+| itamg | `itamg` | it asset disposition company | `it-asset-disposition` | https://cleverviral.co/case-studies/itamg |
+| fitmanager | `fitmanager` | fitness operations software | `fitness-software` | https://cleverviral.co/case-studies/fitmanager |
+| hector ai | `hector-ai` | amazon ads platform | `amazon-ads` | https://cleverviral.co/case-studies/hector-ai |
+| virtu3d | `virtu3d` | 3d product development platform | `3d-product-development` | https://cleverviral.co/case-studies/virtu3d |
+
+Removed client quotes (restore onto their real-named page when unblinding):
+- **trynow**: "you guys have been absolutely crushing it for us. you took cold outbound
+  from a non-existent channel into a meaningful revenue driver in 6 weeks." — benjamin
+  davis, founder, trynow.
+- **itamg**: "shoutout to this entire team, you all are doing a great job and we have
+  really enjoyed partnering. some big deals in the process from all of your work." —
+  richy george, itamg.
+- **virtu3d**: "most outreach always comes across as very generic, very non-personal,
+  when i read your emails, they are personal, they're well done. i would respond to
+  those emails." — enrico zamarra, sales director, virtu3d.
+
+Generalized brand mentions to restore on unblinding:
+- media-cdn's play 2: anonymous text "a jewelry reference for jewelry brands, skincare
+  for skincare, apparel for apparel, and a head-to-head against a legacy cdn for
+  enterprise" was originally "leibish for jewelry, mádara for skincare, allbirds for
+  apparel, gap vs akamai for enterprise."
+- 3d-product-development's play 5 said "browzwear customers" (now "customers of a
+  partner design platform"), and its opener quote named virtu3d directly (now "the
+  platform auto-generates the tech packs that role grinds out" — originally "virtu3d
+  auto-generates the tech packs that role grinds out").
+- All six anonymized pages' `<h1>`/situation sentences replaced the company name with
+  "this platform"/"this app"/"this company" — search each page for those to find the
+  exact spot the real name goes back in.
+
+fitmanager and hector ai had no client quote to begin with (content-v4 never gave one),
+so nothing to restore there beyond the title/slug/link.
+
 ## Structure
 
 ```
 index.html              homepage
 projects/index.html     projects page
-projects/<slug>/index.html  case study pages (9, see content-v4/fixes-round-2 sections)
+projects/<slug>/index.html  case study pages (10, see content-v4/fixes-round-2/fixes-round-3 sections)
 skills-md/index.html    skills page
 the-adhd-thing/index.html
 404.html                custom 404
@@ -86,9 +137,10 @@ override inline — `grep` the class name across all 5 HTML files and `assets/si
   outcome." The `tool logos via logo.dev` credit stays in the footer, not here.
 - /projects has no filter chips anymore (`.chips`/`#pf` and its JS were removed
   entirely — the sticky solid-background bar was rendering as a visible dark box over
-  the ember glow). All 11 rows (as of content-v4 + fixes-round-2, see below) are one
-  plain `<ul class='work'>` list, unfiltered, in their original order (6 named/linked
-  cleverviral engagements, 2 unnamed plain rows, then xeno/scrollmark/airblack).
+  the ember glow). All 10 rows (as of fixes-round-3, see below) are one plain
+  `<ul class='work'>` list, unfiltered, in their original order, and every row now
+  links to a case page (there are no more unlinked plain rows) — 6 anonymized
+  cleverviral engagements, then xeno/scrollmark/airblack/bright.
 
 ## Mobile nav
 
@@ -199,12 +251,15 @@ cut the "what happened, with numbers." sub, filter chips removed entirely, meta 
 replaced by the results strip, one plain unfiltered work list, the now-line moved
 under the h1).
 
-The /projects recommendations grid now shows zoë merchant, aditya singh and paul
-keegan (real LinkedIn recommendation excerpts) — this replaced the original 3, which
-stay on the homepage unchanged, so no quote repeats across pages. (content-v3.md named
-"tushita jolly" as a third name, but the user's follow-up explicitly said not to
-include her and gave paul keegan's quote instead — go with the quotes actually
-supplied, not the doc's names, if they ever conflict again.)
+The /projects recommendations grid shows aditya singh and paul keegan (real LinkedIn
+recommendation excerpts, 2-column grid) — these replaced the original 3, and stay
+distinct from the homepage's own 3 quotes, so no quote repeats across those two pages.
+(content-v3.md named "tushita jolly" as a third name, but the user's follow-up
+explicitly said not to include her and gave paul keegan's quote instead — go with the
+quotes actually supplied, not the doc's names, if they ever conflict again.) zoë
+merchant's quote was originally the third card here too, but fixes-round-3 moved it
+onto the new `/projects/bright/` case page (she's bright's managing director), so it
+no longer appears on /projects itself.
 
 **Not yet done** (needs user-supplied content before it can be): the-adhd-thing as a
 writing hub with real posts (current posts are single paragraphs; doc wants them
@@ -228,31 +283,29 @@ case-study plan entirely. Fully rolled out:
   infrastructure/deliverability plays. `fountane` was dropped from the site entirely
   per an explicit user call (it was the old "3d design service" /projects row, before
   content-v4 even shipped).
-- **/projects rows** (11 total after the fixes-round-2 cut below — see that section):
-  named rows link to case pages (`/projects/<slug>/`), plain rows (`ai marketing
-  agency`, `accounting services firm`) stay plain — no link, no hover state
-  (`<div class='plain'>` instead of `<a>`, styled via `.work .plain` alongside
-  `.work a` in `projects/index.html`'s own inline style). Homepage "selected work"
-  mirrors 4 of these (speedsize, itamg, trynow, xeno) with identical outcome text.
-- **Case page template** (`projects/<slug>/index.html`, 9 pages after fixes-round-2 —
-  speedsize, trynow, itamg, fitmanager, hector-ai, virtu3d, xeno, scrollmark,
-  airblack): back link, eyebrow + h1, role line, up to 3 big numbers
-  (`.cnums`/`.cnum`), "the situation" (only where the doc gives one — xeno/scrollmark/
-  airblack skip it, they only have "what i did" steps from LinkedIn), numbered steps
-  (`.csteps`, muted result line after where the doc gives one), an optional "an opener
-  that worked" quote block (`.copener`), an optional client quote (`.cquote`), a `full
-  case study on cleverviral.co ↗` link (the cleverviral pages only — xeno/scrollmark/
-  airblack have no such link), and a "next project →" link chasing the row order,
-  wrapping from airblack back to speedsize. All the `.case`/`.cback`/`.ceyebrow`/
-  `.cnums`/`.cnum`/`.cbody`/`.csteps`/`.copener`/`.cquote`/`.cfull`/`.cnext` rules live in
-  `assets/site.css` (byte-identical across all case pages); each page still carries its
-  own small inline `<style>` for the `.poster`/`.btn`/`.contact`/`footer` rules, matching
-  the existing per-page-duplication pattern used by the other 5 pages (this predates
-  content-v4 and wasn't refactored as part of it).
-- **Results strip**: `RESULTS` array in `assets/site.js` fully replaced with the
-  content-v4 list (speedsize, itamg, trynow, fitmanager numbers, plus the pre-existing
-  xeno numbers). Hero proof-strip numbers (500k+ emails, 1,000+ opportunities, $2m arr
-  at xeno) are unchanged.
+- **/projects rows**: originally 15, cut to 11 in fixes-round-2 and to 10 in
+  fixes-round-3 (which also anonymized the 6 cleverviral rows and added `bright`) —
+  see those sections for the current final row list. Homepage "selected work" mirrors
+  4 of these with identical outcome text.
+- **Case page template** (`projects/<slug>/index.html`; the current 10 pages and their
+  slugs are listed in fixes-round-3 below): back link, eyebrow + h1, role line, up to 3
+  big numbers (`.cnums`/`.cnum`), "the situation" (only where the doc gives one —
+  xeno/scrollmark/airblack/bright skip it, they only have "what i did" steps from
+  LinkedIn/resume), numbered steps (`.csteps`, muted result line after where the doc
+  gives one), an optional "an opener that worked" quote block (`.copener`), an optional
+  client quote (`.cquote`), originally a `full case study on cleverviral.co ↗` link on
+  the cleverviral pages (removed in fixes-round-3 while anonymous — see the naming
+  section above), and a "next project →" link chasing the row order in a loop. All the
+  `.case`/`.cback`/`.ceyebrow`/`.cnums`/`.cnum`/`.cbody`/`.csteps`/`.copener`/`.cquote`/
+  `.cfull`/`.cnext` rules live in `assets/site.css` (byte-identical across all case
+  pages); each page still carries its own small inline `<style>` for the
+  `.poster`/`.btn`/`.contact`/`footer` rules, matching the existing per-page-duplication
+  pattern used by the other 5 pages (this predates content-v4 and wasn't refactored as
+  part of it).
+- **Results strip**: `RESULTS` array in `assets/site.js` originally named the four
+  cleverviral clients directly; fixes-round-3 replaced those with type descriptions
+  (see that section). Hero proof-strip numbers (500k+ emails, 1,000+ opportunities, $2m
+  arr at xeno) are unchanged throughout.
 - **skills-md**: `deliverability-triage.skill` removed from the `SKILLS` array (outside
   Mayank's own scope per the role-honesty rule above) — 7 skills remain.
 - **Hand-drawn marks** (new design system): `.hand[data-hand="loop"|"under"]` in
@@ -275,23 +328,30 @@ case-study plan entirely. Fully rolled out:
 - **sitemap.xml**: all new case-page URLs added (see fixes-round-2 for the current
   final list, after 2 of the original 11 case pages were deleted).
 
-**Known limitation, unresolved**: this sandbox's egress policy blocks `cleverviral.co`
-outright (`curl` returns `CONNECT tunnel failed, response 403` / proxy `connect_rejected`
-for both the base `/case-studies` page and all individual client slugs, confirmed
-repeatedly across sessions) — the same pattern as the `img.logo.dev` block documented
-above. content-v4-work.md's own build order ends with "check every cleverviral.co link
-opens, then publish"; that verification step could not be performed from inside this
-sandbox. The cleverviral.co links were implemented exactly as given in the spec and are
-believed correct (the user stated they read cleverviral.co/case-studies directly on
-2026-09-25, and fixes-round-2.md's own audit — presumably run with real browser access —
-separately confirmed "all cleverviral.co case study links point to real pages" and that
-the remaining case pages' numbers match cleverviral's published figures), but this
-sandbox itself still cannot independently verify that.
+**Formerly a known limitation, now moot while anonymous**: this sandbox's egress policy
+blocks `cleverviral.co` outright (`curl` returns `CONNECT tunnel failed, response 403` /
+proxy `connect_rejected`, confirmed repeatedly across sessions) — the same pattern as
+the `img.logo.dev` block documented above. This mattered while the site linked out to
+`cleverviral.co/case-studies/<slug>`; fixes-round-2.md's own audit (run with real
+browser access) confirmed those 8 links resolved and that the numbers matched
+cleverviral's published figures. fixes-round-3 removed every such link while the client
+names are anonymous (see the naming section above), so this block no longer affects
+anything live on the site — but it will matter again if/when Mayank approves naming
+clients and the `full case study on cleverviral.co ↗` links come back: a future session
+(or the user) should re-verify those links resolve at that point, since this sandbox
+still can't check.
 
 ## fixes round 2 (2026-09-25, same day as content-v4)
 
 `fixes-round-2.md` was a user-run audit of the live content-v4 site plus one more
 explicit content change. Rolled out:
+
+*(Note: the client names below — speedsize, trynow, itamg, fitmanager, hector-ai,
+virtu3d — are what this round actually shipped at the time, using the real names
+content-v4 had given those pages. fixes-round-3 anonymized all six of them; see the
+"client naming" section near the top of this file for the current slugs/titles, and
+the fixes-round-3 section below for what's live now. Don't use the real names below
+when describing current site state — they're historical record only.)*
 
 - **4 projects removed entirely, per Mayank's own call**: caveminds,
   tattoo-numbing-cream-co, "logistics (3pl) platform", and "uk tax-consulting firm" are
@@ -355,3 +415,98 @@ errors besides the pre-existing img.logo.dev block, zero horizontal overflow at 
 width), the full next-project chain followed end-to-end (all 200s, closes the loop),
 and the specific interaction checks called out above (hand-mark timing, inert/tab
 order, chip list, button fill).
+
+## fixes round 3 (2026-09-25, same day as content-v4 and fixes-round-2)
+
+`fixes-round-3.md` did three things: cut 2 more /projects rows, switched the 6
+cleverviral client case pages to anonymous mode, and rewrote the 3 pre-cleverviral
+pages plus added a 4th from resume/LinkedIn detail. Rolled out:
+
+- **`ai marketing agency` and `accounting services firm` removed** from /projects
+  entirely (no case pages ever existed for these two, so nothing to delete there) —
+  every remaining /projects row now links to a case page; there are no more unlinked
+  plain rows (`.work .plain`'s CSS in `projects/index.html`'s inline style is now
+  unused dead code, left in place rather than touched, since removing it wasn't asked
+  and it's harmless).
+- **Anonymous mode for the 6 cleverviral case pages**: see the "client naming" section
+  near the top of this file for the full reversible mapping (real name ↔ anonymous
+  title ↔ old slug ↔ new slug ↔ cleverviral url), the 3 removed client quotes, and the
+  2 generalized brand-name plays. Summary of what changed on each of the 6 renamed
+  pages (folders `git mv`'d to their new slugs, so history follows):
+  - `<title>`/meta description/og/twitter tags, `<h1>`, `/projects` row title, homepage
+    row title (3 of the 6 are on the homepage), results-strip label, and every
+    "next project" label pointing at or from these pages all switched to the anonymous
+    title.
+  - Eyebrows shortened to a category tag (e.g. `saas, ecommerce infrastructure`) since
+    the anonymous h1 is now the descriptive phrase that used to live in the eyebrow.
+  - Situation paragraphs' opening sentence swapped the company name for "this
+    platform"/"this app"/"this company".
+  - The `full case study on cleverviral.co ↗` link (`.cfull`) removed from all 6.
+  - The 3 client quotes that named the company (trynow/benjamin davis,
+    itamg/richy george, virtu3d/enrico zamarra) removed entirely, per the spec.
+  - 3d-product-development's opener quote originally said "virtu3d auto-generates the
+    tech packs..." — the spec's own "keep the published openers, they don't name the
+    client" rule didn't hold for this one specific opener, so it was edited to "the
+    platform auto-generates the tech packs..." to actually satisfy the round's own "no
+    client name anywhere in the page source" checklist. Flagging this explicitly since
+    it's the one place this round deviated from "keep openers as-is."
+  - All 6 pages already had exactly 5 numbered plays from content-v4 (the spec's "bring
+    each page up to 5, a couple have 2 or 3" didn't end up applying to any of the
+    survivors — that must have been about pages fixes-round-2 already deleted).
+  - "The lesson" block (spec section 3) was **not added** — the spec's own text says
+    "show these only after mayank approves the wording" since they're interpretive,
+    and no approval has happened in this session. The draft wording is sitting in
+    fixes-round-3.md if a future session gets the go-ahead to add it.
+- **xeno, scrollmark, airblack rewritten from resume + LinkedIn** (titles/dates from
+  LinkedIn, detail from the resume, nothing invented beyond those two sources):
+  - xeno: numbers changed to `$2m` arr from 2 new lead-gen channels, `$1.4m` sql
+    pipeline a quarter, `45%` faster first reach-out; "what i did" expanded from 5 to 6
+    steps. Quote (pranav ahuja) and role line unchanged.
+  - scrollmark: went from **no numbers row** (content-v4 explicitly said none were
+    published) to 3 new numbers (`$525k` deal pipeline in 3 months, `120+` qualified
+    leads from abm, `+70%` lead conversion rate) and 4 "what i did" steps (was 3). Its
+    /projects row outcome text was also updated from the old placeholder "demand gen
+    pipeline built from zero" to `$525k pipeline in 3 months` to match — not explicitly
+    requested by the round-3 doc, but a direct consequence of it now having a real
+    number, consistent with the site's "let numbers do the work" rule.
+  - airblack: added a third number (`-40%` marketing cost) and expanded "what i did"
+    from 3 to 6 steps. No quote (still none given). Its `next project` link now points
+    to `bright` (was `speedsize`, which no longer exists under that name).
+  - Titles are inconsistent across mayank's own resume and LinkedIn (resume says
+    "growth marketing strategist" for xeno vs LinkedIn's "lead, growth marketing";
+    "associate" vs "senior associate" for airblack; "lead" vs "specialist" for
+    scrollmark) — LinkedIn's wording is what's live everywhere on the site per the
+    spec's own instruction, and Mayank should align his resume to match.
+- **New `/projects/bright/` case page**: eyebrow `uk marketing consultancy`, role line
+  `fractional marketing consultant · oct to dec 2023 · remote, london`, numbers `+20%`
+  weekly engagement and `+20%` email reply rate, 2 "what i did" steps, and zoë
+  merchant's quote (`managing director, bright`) moved here from the /projects
+  recommendations grid — she was already attributed to "bright" there, which is why
+  this move makes sense. No cleverviral link (never a cleverviral client). Added to
+  /projects as row 10 and to sitemap.xml.
+- **/projects rows, final list (10, all linked)**: `media-cdn`, `try-before-you-buy`,
+  `it-asset-disposition`, `fitness-software`, `amazon-ads`, `3d-product-development`,
+  `xeno`, `scrollmark`, `airblack`, `bright`.
+- **"Next project" chain, final** (closes the loop): media-cdn → try-before-you-buy →
+  it-asset-disposition → fitness-software → amazon-ads → 3d-product-development → xeno
+  → scrollmark → airblack → bright → media-cdn. (fitness-software's, amazon-ads's and
+  airblack's `next` targets all changed from what fixes-round-2 had set, since two of
+  the old slugs were renamed and airblack's old target no longer exists under that
+  name.)
+- **Results strip**: the 3 entries naming a cleverviral client directly were replaced
+  with type descriptions — `pipeline for a media cdn saas`, `positive replies for an
+  itad company`, `qualified leads for a try-before-you-buy app`, `qualified leads for a
+  fitness ops saas`. The 2 xeno entries and the 1 generic entry (`4.2% → 9.6% reply
+  rate on the same list`) are unaffected.
+- **sitemap.xml**: `speedsize`/`trynow`/`itamg`/`fitmanager`/`hector-ai`/`virtu3d` URLs
+  replaced with their new slugs; `bright` added. Final list matches the /projects rows
+  above plus `/`, `/projects/`, `/skills-md/`, `/the-adhd-thing/`.
+
+Verified: grepped the whole repo for every real client name/identifying string the
+round's own checklist named (speedsize, trynow, itamg, fitmanager, hector, virtu3d,
+leibish, mádara, allbirds, browzwear, benjamin, richy, enrico) — none appear in any
+page source; confirmed no `cleverviral.co/case-studies` links remain; confirmed the old
+6 slugs are gone from sitemap.xml; no em-dashes; HTML tag balance across all touched
+files; `node --check` on site.js; the full next-project chain followed end-to-end
+(closes the loop, all resolve). The reversible mapping above is what a future
+"switch to named" pass reads from.

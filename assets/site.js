@@ -272,11 +272,11 @@
 
 (() => {
   const RESULTS = [
-    ['$1.9m+', 'pipeline for speedsize'],
-    ['0.1% → 22.9%', 'positive replies for itamg'],
-    ['237', 'qualified leads for trynow'],
-    ['173', 'qualified leads for fitmanager'],
-    ['10.15%', 'peak positive reply rate for speedsize'],
+    ['$1.9m+', 'pipeline for a media cdn saas'],
+    ['0.1% → 22.9%', 'positive replies for an itad company'],
+    ['237', 'qualified leads for a try-before-you-buy app'],
+    ['173', 'qualified leads for a fitness ops saas'],
+    ['10.15%', 'peak positive reply rate for a media cdn saas'],
     ['4.2% → 9.6%', 'reply rate on the same list'],
     ['+178%', 'website traffic at xeno'],
     ['$1.4m/quarter', 'sql pipeline at xeno']
